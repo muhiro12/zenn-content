@@ -110,7 +110,7 @@ ref.listen(
         bottomTab.item != bottomTab.oldItem) {
       return;
     }
-    ref.refresh(provider);
+    ref.refresh(homeProvider);
   },
 );
 ```
