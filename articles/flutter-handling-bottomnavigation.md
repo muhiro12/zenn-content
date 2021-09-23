@@ -1,5 +1,5 @@
 ---
-title: "BottomNavigationBarItemをハンドリングする"
+title: "RiverpodでBottomNavigationBarをハンドリングする"
 emoji: "🤹"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Flutter", "RiverPod", "Dart", "iOS", "Android"]
