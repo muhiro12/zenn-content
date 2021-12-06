@@ -39,7 +39,6 @@ if test -d /opt/homebrew/bin; then
 fi
 
 if which swiftlint >/dev/null; then
-    swiftlint autocorrect --format
     swiftlint
 else
     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
