@@ -1,5 +1,5 @@
 ---
-title: "SwiftUI x CoreData でセクション分けされたリストを作る"
+title: "SwiftUI × CoreData でセクション分けされたリストを作る"
 emoji: "🎬"
 type: "tech"
 topics: [Swift, SwiftUI, CoreData]
