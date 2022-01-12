@@ -3,7 +3,7 @@ title: "SwiftUI x CoreData でセクション分けされたリストを作る"
 emoji: "🎬"
 type: "tech"
 topics: [Swift, SwiftUI, CoreData]
-published: false
+published: true
 ---
 
 ## やりたいこと
