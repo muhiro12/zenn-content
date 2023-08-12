@@ -30,7 +30,7 @@ fi
 
 ## Answer
 
-これはHomeBrewでインストールする際のpathが、Interl版とM1版で異なることに起因する。
+これはHomeBrewでインストールする際のpathが、Intel版とM1版で異なることに起因する。
 M1版でのpathをXcodeが取得できない状態となっているので、下記のようにスクリプトを修正する必要がある。
 
 ```sh
