@@ -36,12 +36,8 @@ import SwiftData
 @main
 struct TripsApp: App {
     let container = {
-        let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-            .first!
-            .appendingPathComponent("Trips.sqlite")
-
+        let url = URL.applicationSupportDirectory.appendingPathComponent("Trips.sqlite")
         let configuration = ModelConfiguration(url: url)
-
         return try! ModelContainer(for: Trip.self, configurations: configuration)
     }()
 
@@ -96,10 +92,10 @@ struct TripsApp: App {
 }
 ```
 
-ドキュメントおよびサンプルコードでは、`ModelContainer` を設定することで全ての画面から同じデータにアクセスすることができる、と記載されています
+ドキュメント [*](https://developer.apple.com/documentation/coredata/adopting_swiftdata_for_a_core_data_app#4295880) およびサンプルコードでは、`ModelContainer` を設定することで全ての画面から同じデータにアクセスすることができる、と記載されています
 では、そのコンテナはどこにあるのか？どこを見ているのか？という疑問が生まれます。
 
-`ModelContainer` の中身を見ると、
+`ModelContainer` [*](https://developer.apple.com/documentation/swiftdata/modelcontainer) の中身を見ると、
 
 ```swift
 public class ModelContainer : Equatable, @unchecked Sendable {
@@ -110,7 +106,7 @@ public class ModelContainer : Equatable, @unchecked Sendable {
 }
 ```
 
-さらに怪しそうな `ModelConfiguration` の中身を見ると、
+さらに、怪しそうな `ModelConfiguration` [*](https://developer.apple.com/documentation/swiftdata/modelconfiguration) の中身を見ると、
 
 ```swift
 public struct ModelConfiguration : Identifiable, Hashable {
@@ -136,12 +132,12 @@ print(url)
 file:///.../Containers/Data/Application/.../Library/Application%20Support/default.store
 ```
 
-どうやら `default.store` というファイルにデータが保存されているようです。
+どうやら `default.store` というファイルにデータが保存されるようです。
 
 
 ## CoreDataではどこにデータが保存されるのか
 
-CoreData版サンプルコードでは `NSPersistentContainer` から確認することができます。
+CoreData版サンプルコードでは `NSPersistentContainer` からURLを取得することができます。
 
 ```swift
 let persistentStoreDescription = NSPersistentContainer(name: "Trips").persistentStoreDescriptions.first!
@@ -161,16 +157,14 @@ file://.../Containers/Data/Application/.../Library/Application%20Support/Trips.s
 この場所の取得方法は下記の通り。
 
 ```swift
-let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-    .first!
-    .appendingPathComponent("Trips.sqlite")
+let url = URL.applicationSupportDirectory.appendingPathComponent("Trips.sqlite")
 ```
 
 ## 解決方法
 
 結論としては `default.store` ではなく `Trips.sqlite` に保存するよう指定すれば良い、ということになります。
 
-SwiftData版サンプルコードでは `modelContainer(for:inMemory:isAutosaveEnabled:isUndoEnabled:onSetup:)` を使って、間接的にコンテナを設定しています。
+SwiftData版サンプルコードでは `modelContainer(for:inMemory:isAutosaveEnabled:isUndoEnabled:onSetup:)` [*](https://developer.apple.com/documentation/swiftui/scene/modelcontainer(for:inmemory:isautosaveenabled:isundoenabled:onsetup:)-82y49) を使って、間接的にコンテナを設定しています。
 
 ```swift
 @main
@@ -184,18 +178,14 @@ struct TripsApp: App {
 }
 ```
 
-今回の場合、URLを指定したいのでコンテナを自作して `modelContainer(_:)` から直接コンテナを設定します。
+今回の場合、URLを指定したいのでコンテナを自作して `modelContainer(_:)` [*](https://developer.apple.com/documentation/swiftui/scene/modelcontainer(_:)) から直接コンテナを設定します。
 
 ```swift
 @main
 struct TripsApp: App {
     let container = {
-        let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
-            .first!
-            .appendingPathComponent("Trips.sqlite")
-
+        let url = URL.applicationSupportDirectory.appendingPathComponent("Trips.sqlite")
         let configuration = ModelConfiguration(url: url)
-
         return try! ModelContainer(for: Trip.self, configurations: configuration)
     }()
 
