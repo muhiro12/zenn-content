@@ -2,7 +2,7 @@
 title: "SwiftLintを歴史あるプロジェクトに導入するための最高のスクリプト"
 emoji: "🕰️"
 type: "tech"
-topics: [Swift, SwiftLint, Xcode]
+topics: [Swift, SwiftLint, iOS, Xcode]
 published: true
 ---
 
@@ -91,11 +91,9 @@ done
 その場合はスクリプト実行後に個別で対応してください。
 または再度スクリプトを実行することでdisableコメントを追加することも可能です。
 
-## ポエム
+## 私見
 
-### 私見
-
-disableコメントで対応してしまうこと、無条件で大量に追加してしまうこと、については是非があると思います。
+disableコメントで対応してしまうこと、無条件で大量に追加してしまうこと、については賛否あると思います。
 私としてはLintは **未来に追加されるコードへの対策** だと捉えているので、既存のコードについては優先度が下がります。
 
 大量のエラーを目にしてルール自体を無効化してしまうよりは
@@ -105,7 +103,54 @@ disableコメントで対応してしまうこと、無条件で大量に追加�
 
 とできる方が良いと考えています。
 
-### あとがき
+## おすすめの使い方
+
+とは言っても、実際に全てのエラーをdisableコメントで対応してしまうのは横暴だと思います。
+
+- `--fix --format` で自動フォーマットを利用する
+- 正規表現や置換などで一律に処理できるものは対応する
+- 件数の少ないものについてはまずは修正を試みる
+
+などで対応した後、それでもエラーが残る場合に今回のスクリプトを利用するのが良いです。
+
+#### 例
+
+たとえば下記のような `.swiftlint.yml` を用意しましょう。
+`all` で全てのルールを有効化し、不要なルールのみ無効化する方針をおすすめします。
+現状のコードでエラーやワーニングが発生する場合は、コメント付きで無効化しておきます。
+
+```yml:.swiftlint.yml
+opt_in_rules:
+    - all
+
+disabled_rules:
+    - prefer_nimble # XCTestを使う
+    - required_deinit # deinitは省略する
+    # ...
+
+    # TODO: 以降のルールは一時的に無効化しているため、有効化およびコードの修正をする
+    - leading_whitespace
+    - private_outlet
+    - force_unwrapping
+    # ...
+```
+
+##### [leading_whitespace](https://realm.github.io/SwiftLint/force_unwrapping.html)
+
+`Supports autocorrection: Yes` なので、有効化して自動フォーマットを利用しましょう。
+
+##### [private_outlet](https://realm.github.io/SwiftLint/private_outlet.html)
+
+`@IBOutlet var` -> `@IBOutlet private var` などの文字列置換で簡単に対応できるので、まとめて対応しましょう。
+
+##### [force_unwrapping](https://realm.github.io/SwiftLint/force_unwrapping.html)
+
+有効化して大量にワーニングが発生する場合、出来ることは少ないです。
+今回のスクリプトを利用してdisableコメントを追加しましょう。
+
+複数のルールで発生するエラーやワーニングに対して、まとめて対応することも可能です。
+
+## あとがき
 
 私はシェルや正規表現に苦手意識を持っているので、今回のように少し複雑なスクリプトはこれまで避けてきました。
 最近はこういった関心が低い作業についてはさらっとAIに任せることができるので、自身は本質的なことだけに集中できて良いですね。
