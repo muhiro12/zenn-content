@@ -109,7 +109,7 @@ Sample/
 
 4. `MyPackage` の `Package.swift` を設定します。
 
-```swift
+```swift:MyPackage/Package.swift
 // swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
@@ -140,7 +140,7 @@ let package = Package(
 
 2. Playgrounds側の `ContentView` のアクセスレベルを `public` に変更します。
 
-```swift
+```swift:MyPackage/Sample.swiftpm/Sources/ContentView.swift
 import SwiftUI
 
 public struct ContentView: View {
@@ -176,7 +176,7 @@ Sample/
 
 4. Xcode側の `SampleApp`　を修正し、`MyPackage` をインポートします。
 
-```swift
+```swift:Sample/SampleApp.swift
 import SwiftUI
 import MyPackage
 
@@ -227,9 +227,75 @@ PlaygroundsでArchiveすると、Xcode側で設定した内容が反映されな
 
 iPadでの開発を叶えるためには **Xcode Cloud** 一択になりますよね！
 
-## こだわる人向けに
+## 補足
 
-:::details　Coming Soon
+:::details こだわる人向けに
+iPadでの開発、というニッチな領域を攻めている人はこだわりたい部分も多いと思います。
+何か役に立つかもしれないので、私が気づいたことをスクラップレベルで記載しておきます。
+
+### パッケージ関連の名前
+
+Swift Packageやマルチモジュール化の話にはなりますが、`Package.swift` で設定する名前について記載します。
+
+MyPackageA, B, Cはそれぞれ別の名前でも問題ありません。
+
+MyPackageCについては `products` , `targets` で同じ名前に揃える必要があります。
+またXcodeプロジェクト側のターゲット名 `Sample` と同じにすることはできません。
+ここで設定した名前に応じて `import MyPackageC` のようにインポートすることになります。
+
+```swift:Package.swift
+let package = Package(
+    name: "MyPackageA",
+    platforms: [.iOS(.v17)],
+    products: [.library(name: "MyPackageB", targets: ["MyPackageC"])],
+    targets: [.target(name: "MyPackageC", path: "Sample.swiftpm/Sources")]
+)
+```
+
+### Swiftコード用のディレクトリ
+
+`Sample.swiftpm` 配下に作成する `Sources` ディレクトリは任意の名前で問題ありません。
+
+### ディレクトリ構成
+
+ルートディレクトリを綺麗に保ちたいという考えがあると思います。
+特にPlaygroundsプロジェクト `Sample.swiftpm` はルートにあった方が都合が良いでしょう。
+
+一例として以下のようなディレクトリ構成はどうでしょうか。
+
+```
+Sample/
+├── Package.swift
+├── Sample.xcworkspace
+├── Sample.swiftpm
+│   ├── Package.swift
+│   ├── MyApp.swift
+│   └── Sources/
+│       └── ContentView.swift
+└── Sample/
+    ├── Sample.xcodeproj
+    └── Sample
+        └── SampleApp.swift
+```
+
+ルートの `Sample/` 自体を `MyPackage/` の代わりに利用する形です。
+併せて、あまり利用しない `Sample.xcodeproj` を `Sample/Sample/` 配下に移動しています。
+
+これを実現するには `Sample.xcworkspace/contents.xcworkspacedata` を下記のように修正します。
+ルートを指定したい場合は空文字 `location = "group:"` と記述することで実現することができます。
+
+```:Sample.xcworkspace/contents.xcworkspacedata
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:">
+   </FileRef>
+   <FileRef
+      location = "group:Sample/Sample.xcodeproj">
+   </FileRef>
+</Workspace>
+```
 :::
 
 ## おわりに
@@ -240,6 +306,6 @@ iPadでの開発を叶えるためには **Xcode Cloud** 一択になります�
 詳細なプロジェクト設定が必要な場合、iPadのみで開発を完結させることはまだ難しい面があります。
 ただし、設定のみをMacで行い、日々の開発をiPadで行うことは十分に可能です。
 
-この構成を活かして、実務レベルのプロジェクトにもiPadでの開発体験を持ち込んでみてはいかがでしょうか。
+この構成を活かして、実務レベルのプロジェクトにもiPadでの開発体験を持ち込んでみてはいかがでしょうか？
 
 WWDC24で **Swift Playgrounds** に更なるアップデートがあることを期待しています！
