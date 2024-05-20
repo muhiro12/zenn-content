@@ -8,8 +8,8 @@ published: false
 
 ## はじめに
 
-***iPadでのiOSアプリを開発***
-これはiOSエンジニアとしてのロマンの一つだと思います。
+***iPadでのiOSアプリ開発***
+これはiOSエンジニアとしてロマンの一つだと思います。
 
 **Swift Playgrounds** の機能も増えてきており、iPadで開発を完結させることも不可能ではなくなってきました。
 実は `Capabilities` などの設定もPlaygroundsで行えるため、本当に様々な機能を持ったアプリを作ることができます。
@@ -50,7 +50,6 @@ published: false
 3. Xcodeプロジェクトを実行して `Xcode` が表示されることを確認します。
 4. Xcodeプロジェクトを閉じます。
 
-
 ### Playgroundsプロジェクトの作成
 
 1. Playgroundsプロジェクト `Sample` を作成します。
@@ -69,7 +68,7 @@ published: false
 
 ### Xcodeワークスペースの作成
 
-1. Xcodeで新規ワークスペース `Sample` を作成します。
+1. Xcodeでワークスペース `Sample` を作成します。
 2. 空のサイドバーに `Sample.xcodeproj` をドラッグ&ドロップします。
 
 ||||
@@ -85,7 +84,7 @@ published: false
 |![](/images/swift-playgrounds-xcode/9.png)|![](/images/swift-playgrounds-xcode/10.png)|![](/images/swift-playgrounds-xcode/11.png)|
 
 2. `MyPackage` の配下に `Sample.swiftpm` を配置します。
-3. `Sample.swiftpm` 内に `Sources` ディレクトリを作成し、`ContentView.swift` を `Sources` 配下に移動します。
+3. `Sample.swiftpm` 配下に `Sources` ディレクトリを作成し、`ContentView.swift` を `Sources` に移動します。
 4. `MyPackage` の `Package.swift` を設定します。
 
 ```swift
@@ -115,23 +114,33 @@ let package = Package(
 |-|-|-|
 |![](/images/swift-playgrounds-xcode/12.png)|![](/images/swift-playgrounds-xcode/13.png)|![](/images/swift-playgrounds-xcode/14.png)|
 
-2. Xcodeプロジェクト側の `ContentView` ファイルを削除します。
-2. `import MyPackage` でパッケージをインポートします。
-3. Playgrounds側の `ContentView` を設定します。
-4. Xcodeプロジェクトを実行して `Playgrounds` が表示されることを確認します。
+2. Playgrounds側の `ContentView` のアクセスレベルを変更します。
+
+```swift
+import SwiftUI
+```
+
+3. Xcode側の `ContentView.swift` を削除します。
+4. Xcode側の `SampleApp`　を修正します
+
+```swift
+import SwiftUI
+```
+
+5. Xcodeプロジェクトを実行して `Playgrounds` が表示されることを確認します。
 
 ## 運用方法
 
 ### 開発時
 
 普段の開発時 つまり Swiftを書く場合は `Sample.swiftpm` を開いて作業します。
-Xcode、Playgroundsのどちらで開いても問題ありません。
+Xcode、Playgroundsどちらで開いても問題ありません。
 
 ### 設定変更時
 
 プロジェクトの設定を変更したい場合は `Sample.xcworkspace` を開いて作業します。
 
-- Info.plistの編集
+- Info.plistの設定
 - Run Scriptの設定
 - Xcode Cloudの設定
 
@@ -139,8 +148,8 @@ Xcode、Playgroundsのどちらで開いても問題ありません。
 
 ## 注意点
 
-`SampleApp.swift` と **プロジェクトの設定ファイル** がそれぞれ2つづつ存在する形になります。
-その点について注意しながら運用する必要があります。
+`SampleApp.swift` と **プロジェクトの設定ファイル** がそれぞれ2つずつ存在する形になります。
+その点に注意して運用する必要があります。
 
 ### `SampleApp.swift`
 
@@ -161,3 +170,4 @@ iPadでの開発を叶えるためには **Xcode Cloud** 一択になります�
 
 ## おわりに
 
+Playgroundsプロジェクトのコードをパッケージ化し、Xcodeプロジェクトから利用する方針で構成しました。
