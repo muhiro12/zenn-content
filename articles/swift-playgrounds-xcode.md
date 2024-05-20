@@ -88,7 +88,7 @@ published: true
 |-|-|-|
 |![](/images/swift-playgrounds-xcode/9.png)|![](/images/swift-playgrounds-xcode/10.png)|![](/images/swift-playgrounds-xcode/11.png)|
 
-2. `MyPackage` の配下に `Sample.swiftpm` を配置します。
+2. `MyPackage` 配下に `Sample.swiftpm` を配置します。
 3. `Sample.swiftpm` 配下に `Sources` ディレクトリを作成し、`ContentView.swift` を `Sources` に移動します。
 
 ```
@@ -123,10 +123,12 @@ let package = Package(
 )
 ```
 
+:::message
 ポイントは **3** で `Package.swift` , `MyApp.swift` 以外のファイルを別ディレクトリに移動することです。
 
 `Package.swift` , `MyApp.swift` の2ファイルを含んだ状態だとビルドが通らなくなります。
 これを防ぐため `MyPackage` のパスを `Sources` に設定し、2ファイルをパッケージから除外しています。
+:::
 
 ### パッケージのインポート
 
