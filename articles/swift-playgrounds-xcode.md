@@ -85,6 +85,23 @@ published: false
 
 2. `MyPackage` の配下に `Sample.swiftpm` を配置します。
 3. `Sample.swiftpm` 配下に `Sources` ディレクトリを作成し、`ContentView.swift` を `Sources` に移動します。
+
+```
+Sample/
+├── Sample.xcworkspace
+├── Sample.xcodeproj
+├── Sample/
+│   ├── SampleApp.swift
+│   └── ContentView.swift
+└── MyPackage/
+    ├── Package.swift
+    └── Sample.swiftpm
+        ├── Package.swift
+        ├── MyApp.swift
+        └── Sources/
+            └── ContentView.swift
+```
+
 4. `MyPackage` の `Package.swift` を設定します。
 
 ```swift
@@ -101,9 +118,9 @@ let package = Package(
 )
 ```
 
-ポイントは **3** で `Package.swift` , `SampleApp.swift` 以外のファイルを別ディレクトリに移動することです。
+ポイントは **3** で `Package.swift` , `MyApp.swift` 以外のファイルを別ディレクトリに移動することです。
 
-`Package.swift` , `SampleApp.swift` の2ファイルを含んだ状態だとビルドが通らなくなります。
+`Package.swift` , `MyApp.swift` の2ファイルを含んだ状態だとビルドが通らなくなります。
 これを防ぐため `MyPackage` のパスを `Sources` に設定し、2ファイルをパッケージから除外しています。
 
 ### パッケージのインポート
@@ -114,17 +131,56 @@ let package = Package(
 |-|-|-|
 |![](/images/swift-playgrounds-xcode/12.png)|![](/images/swift-playgrounds-xcode/13.png)|![](/images/swift-playgrounds-xcode/14.png)|
 
-2. Playgrounds側の `ContentView` のアクセスレベルを変更します。
+2. Playgrounds側の `ContentView` のアクセスレベルを `public` に変更します。
 
 ```swift
 import SwiftUI
+
+public struct ContentView: View {
+    public init() {}
+
+    public var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundColor(.accentColor)
+            Text("Playground")
+        }
+    }
+}
 ```
 
 3. Xcode側の `ContentView.swift` を削除します。
+
+```
+Sample/
+├── Sample.xcworkspace
+├── Sample.xcodeproj
+├── Sample/
+│   └── SampleApp.swift
+└── MyPackage/
+    ├── Package.swift
+    └── Sample.swiftpm
+        ├── Package.swift
+        ├── MyApp.swift
+        └── Sources/
+            └── ContentView.swift
+```
+
 4. Xcode側の `SampleApp`　を修正します
 
 ```swift
 import SwiftUI
+import MyPackage
+
+@main
+struct SampleApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
 ```
 
 5. Xcodeプロジェクトを実行して `Playgrounds` が表示されることを確認します。
@@ -148,10 +204,10 @@ Xcode、Playgroundsどちらで開いても問題ありません。
 
 ## 注意点
 
-`SampleApp.swift` と **プロジェクトの設定ファイル** がそれぞれ2つずつ存在する形になります。
+`App.swift` と **プロジェクトの設定ファイル** がそれぞれ2つずつ存在する形になります。
 その点に注意して運用する必要があります。
 
-### `SampleApp.swift`
+### `App.swift`
 
 出来る限りAppでは **何もせずにContentViewを呼び出すだけ** の方針することをオススメします。
 何かの処理が必要な場合もXcode, Playgroundsで同じ形になるようにしましょう。
