@@ -2,7 +2,7 @@
 title: "XcodeとPlaygroundsを共存させるプロジェクト構成"
 emoji: "🕊️"
 type: "tech"
-topics: [Swift, Playgrounds, Xcode, iPad, plist]
+topics: [Swift, Playgrounds, Xcode, iPad, XcodeCloud]
 published: false
 ---
 
@@ -35,6 +35,11 @@ published: false
 - Xcode Cloud
 
 全てが必須条件ではないですが、制約が厳しくない状況下という点が伝われば嬉しいです。
+
+## 方針
+
+**Playgroundsプロジェクトのコードをパッケージ化し、Xcodeプロジェクトから利用する構成**
+を目指します。
 
 ## 手順
 
@@ -167,7 +172,7 @@ Sample/
             └── ContentView.swift
 ```
 
-4. Xcode側の `SampleApp`　を修正します
+4. Xcode側の `SampleApp`　を修正し、`MyPackage` をインポートします。
 
 ```swift
 import SwiftUI
@@ -209,7 +214,7 @@ Xcode、Playgroundsどちらで開いても問題ありません。
 
 ### `App.swift`
 
-出来る限りAppでは **何もせずにContentViewを呼び出すだけ** の方針することをオススメします。
+出来る限りAppでは **何もせずにContentViewを呼び出すだけ** の方針にすることをオススメします。
 何かの処理が必要な場合もXcode, Playgroundsで同じ形になるようにしましょう。
 
 ### プロジェクトの設定ファイル
@@ -222,8 +227,17 @@ iPadでの開発を叶えるためには **Xcode Cloud** 一択になります�
 
 ## こだわる人向けに
 
-***Coming Soon***
+:::details　Coming Soon
+:::
 
 ## おわりに
 
-Playgroundsプロジェクトのコードをパッケージ化し、Xcodeプロジェクトから利用する方針で構成しました。
+**Playgroundsプロジェクトのコードをパッケージ化し、Xcodeプロジェクトから利用する構成**
+を紹介しました。
+
+詳細なプロジェクト設定が必要な場合、iPadのみで開発を完結させることはまだ難しい面があります。
+ただし、設定のみをMacで行い、日々の開発をiPadで行うことは十分に可能です。
+
+この構成を活かして、実務レベルのプロジェクトにもiPadでの開発体験を持ち込んでみてはいかがでしょうか。
+
+WWDC24で **Swift Playgrounds** に更なるアップデートがあることを期待しています！
