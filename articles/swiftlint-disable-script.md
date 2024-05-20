@@ -61,7 +61,7 @@ done
 ```
 :::
 
-![](/images/swiftlint-disable-script-1.png)
+![](/images/swiftlint-disable-script/1.png)
 
 ## 解説
 

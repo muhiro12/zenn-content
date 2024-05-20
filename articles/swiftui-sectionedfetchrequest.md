@@ -10,7 +10,7 @@ published: true
 
 特定の要素でグルーピングしてセクション付きリストを作成したい。
 
-![](/images/swiftui-sectionedfetchrequest-1.png =300x)
+![](/images/swiftui-sectionedfetchrequest/1.png =300x)
 
 ## つかうもの
 
