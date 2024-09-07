@@ -2,7 +2,7 @@
 title: "AppShortcutsProviderを実装してもショートカットに表示されない"
 emoji: "🙈"
 type: "tech"
-topics: [Swift, iOS, AppIntents, AppShortcutsProvider, Siri]
+topics: [Swift, iOS, AppIntents, Shortcuts, Siri]
 published: true
 ---
 
