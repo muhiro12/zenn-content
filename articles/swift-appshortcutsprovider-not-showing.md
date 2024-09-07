@@ -2,7 +2,7 @@
 title: "AppShortcutsProviderを実装してもショートカットに表示されない"
 emoji: "🙈"
 type: "tech"
-topics: [Swift, AppIntents, AppShortcutsProvider, Shortcuts, Siri]
+topics: [Swift, iOS, AppIntents, AppShortcutsProvider, Siri]
 published: true
 ---
 
@@ -121,6 +121,6 @@ struct YourApp: App {
 ## おわりに
 
 App Intentsはこれから盛んになっていく機能だと思います。
-細かな挙動やドキュメント類も整備されていくでしょう。
+今後、細かな挙動やドキュメント類も整備されていくでしょう。
 
 取り急ぎ、Xcode 16 beta時点の挙動として残しておきます。
